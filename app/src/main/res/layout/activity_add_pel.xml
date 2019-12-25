@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".addPel">
+
+    <EditText
+        android:id="@+id/KOD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="ΚΩΔΙΚΟΣ"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="63dp"
+        tools:layout_editor_absoluteY="134dp" />
+
+
+    <EditText
+        android:id="@+id/ONO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/KOD"
+        android:ems="10"
+        android:hint="ΟΝΟΜΑ"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ONO"
+        android:text="TextView"
+        android:textSize="24sp" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="106dp"
+        android:layout_height="80dp"
+
+        android:layout_alignParentBottom="true"
+
+        android:onClick="CREATE"
+        android:text="CREATE"
+        />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button"
+        android:onClick="ADD_PEL"
+        android:text="Save" />
+
+    <GridView
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+        android:layout_height="273dp"
+
+        android:layout_below="@+id/textView"
+
+        android:numColumns="1" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+
+        android:layout_alignParentRight="true"
+        android:onClick="test"
+        android:text="κινησεις σε email" />
+
+    <Button
+        android:id="@+id/update"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="update_pel"
+        android:text="Διόρθωση" />
+
+    <CalendarView
+        android:layout_below="@+id/grid"
+        android:id="@+id/calendarView"
+        android:layout_width="248dp"
+        android:layout_height="203dp" />
+
+</RelativeLayout>
