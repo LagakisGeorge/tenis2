@@ -338,25 +338,76 @@ public class addPel extends AppCompatActivity {
             }
             mydatabase.close();
             ArrayAdapter<String> arrayAdapter =
-                    new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, values);
+                    new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, values)
 
+             // arxh  αυτο το κομματι βαζει πλαισια στο gridview
+            {
+                public View getView(int position, View convertView, ViewGroup parent) {
+
+                // Return the GridView current item as a View
+                View view = super.getView(position,convertView,parent);
+
+                // Convert the view as a TextView widget
+                TextView tv = (TextView) view;
+
+                //tv.setTextColor(Color.DKGRAY);
+
+                // Set the layout parameters for TextView widget
+                RelativeLayout.LayoutParams lp =  new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
+                );
+                tv.setLayoutParams(lp);
+
+                // Get the TextView LayoutParams
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)tv.getLayoutParams();
+
+                // Set the width of TextView widget (item of GridView)
+                /*
+                    IMPORTANT
+                        Adjust the TextView widget width depending
+                        on GridView width and number of columns.
+
+                        GridView width / Number of columns = TextView width.
+
+                        Also calculate the GridView padding, margins, vertical spacing
+                        and horizontal spacing.
+                 */
+
+
+                Resources r = addPel.this.getResources();
+                int  px = (int) (TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 168, r.getDisplayMetrics()));
+
+
+
+                params.width = px;  // getPixelsFromDPs(EpiloghEid.this,168);
+
+                // Set the TextView layout parameters
+                tv.setLayoutParams(params);
+
+                // Display TextView text in center position
+                tv.setGravity(Gravity.CENTER);
+
+                // Set the TextView text font family and text size
+                tv.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+
+                // Set the TextView text (GridView item text)
+                tv.setText(values.get(position));
+
+                // Set the TextView background color
+                tv.setBackgroundColor(Color.parseColor("#CDDC39"));
+
+                // Return the TextView widget as GridView item
+                return tv;
+            }
+            };
             GridView moviesList;
             moviesList=(GridView)findViewById(R.id.grid);
             moviesList.setAdapter(arrayAdapter);
+// telos  αυτο το κομματι βαζει πλαισια στο gridview;
 
-            // TrapeziaList.setAdapter(arrayAdapter);
 
-            //final MyAdapter adapter = new MyAdapter();
-            //  rv.setAdapter(adapter);
-            //   GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-            //  rv.setLayoutManager(mLayoutManager);
-
-// set up the RecyclerView
-            //   RecyclerView recyclerView = findViewById(R.id.rvAnimals);
-            //    TrapeziaList.setLayoutManager(new LinearLayoutManager(this));
-            //   adapter = new MyRecyclerViewAdapter(this, animalNames);
-            //   adapter.setClickListener(this);
-            //   recyclerView.setAdapter(adapter);
 
         } catch (SQLiteAccessPermException e) {
             e.printStackTrace();

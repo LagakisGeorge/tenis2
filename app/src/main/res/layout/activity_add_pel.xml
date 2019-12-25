@@ -28,10 +28,10 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ONO"
-        android:text="TextView"
+        android:background="@color/colorPrimary"
         android:textSize="24sp" />
     <Button
         android:id="@+id/button"
@@ -56,10 +56,11 @@
     <GridView
         android:id="@+id/grid"
         android:layout_width="match_parent"
-        android:layout_height="273dp"
+        android:layout_height="473dp"
 
         android:layout_below="@+id/textView"
 
+        android:background="@color/colorAccent"
         android:numColumns="1" />
 
     <Button
@@ -81,11 +82,5 @@
         android:layout_alignParentTop="true"
         android:onClick="update_pel"
         android:text="Διόρθωση" />
-
-    <CalendarView
-        android:layout_below="@+id/grid"
-        android:id="@+id/calendarView"
-        android:layout_width="248dp"
-        android:layout_height="203dp" />
 
 </RelativeLayout>

@@ -9,19 +9,26 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +45,9 @@ public class kiniseis extends AppCompatActivity {
     public CalendarView calendarView;
     static Handler handler;
     public TextView t5;
+
+
+
 
     public String apo;
     CalendarView calendar;
@@ -97,6 +107,7 @@ public class kiniseis extends AppCompatActivity {
 
                     EditText sql;
                     sql=findViewById(R.id.editText);
+                    sql.setVisibility(View.INVISIBLE);
                     sql.setText("select IDBARDIA, CH1,CH2  from  parousies where CH1>='"+d1+"' AND CH1<='"+d2+"' AND CH2+CH1 NOT NULL order by CH1 desc");
 
 
@@ -110,6 +121,109 @@ public class kiniseis extends AppCompatActivity {
     }
 
 
+    public void showkin(View view){
+        values=new ArrayList<>();  // μηδενιζω την λιστα
+        try{
+
+            SQLiteDatabase db = null;
+            db = openOrCreateDatabase("pelates", MODE_PRIVATE, null);
+
+            EditText ckod=findViewById(R.id.editID);
+            String kod=ckod.getText().toString();
+
+            Cursor cursor;
+
+
+            if (kod.length()>0){ // where IDBARDIA="+kod+"
+                cursor = db.rawQuery("select IDBARDIA,CH1,CH2  from  parousies where IDBARDIA="+kod+" and  CH1>='" + d1 + "'  and CH1<='" + d2 + "' order by CH1 desc", null);  //+ " order by CH1 desc"
+            }else {
+                cursor = db.rawQuery("select IDBARDIA,CH1,CH2  from  parousies where CH1>='" + d1 + "'  and CH1<='" + d2 + "' order by CH1 desc", null);  //+ " order by CH1 desc"
+            }
+
+
+            if (cursor.moveToFirst()) {
+                do {
+                    values.add( cursor.getString(2));
+                    values.add( cursor.getString(1));
+
+                } while (cursor.moveToNext());
+            }
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+
+            db.close();
+        } catch (Exception e) {
+        }
+
+        ArrayAdapter<String> arrayAdapter =
+                new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, values)
+
+                        // arxh  αυτο το κομματι βαζει πλαισια στο gridview
+                {
+                    public View getView(int position, View convertView, ViewGroup parent) {
+
+                        // Return the GridView current item as a View
+                        View view = super.getView(position,convertView,parent);
+
+                        // Convert the view as a TextView widget
+                        TextView tv = (TextView) view;
+
+                        //tv.setTextColor(Color.DKGRAY);
+
+                        // Set the layout parameters for TextView widget
+                        RelativeLayout.LayoutParams lp =  new RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
+                        );
+                        tv.setLayoutParams(lp);
+
+                        // Get the TextView LayoutParams
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)tv.getLayoutParams();
+
+                        // Set the width of TextView widget (item of GridView)
+                /*
+                    IMPORTANT
+                        Adjust the TextView widget width depending
+                        on GridView width and number of columns.
+
+                        GridView width / Number of columns = TextView width.
+
+                        Also calculate the GridView padding, margins, vertical spacing
+                        and horizontal spacing.
+                 */
+
+
+                        Resources r = kiniseis.this.getResources();
+                        int  px = (int) (TypedValue.applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP, 168, r.getDisplayMetrics()));
+
+
+
+                        params.width = px;  // getPixelsFromDPs(EpiloghEid.this,168);
+
+                        // Set the TextView layout parameters
+                        tv.setLayoutParams(params);
+
+                        // Display TextView text in center position
+                        tv.setGravity(Gravity.CENTER);
+
+                        // Set the TextView text font family and text size
+                        tv.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
+                        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+
+                        // Set the TextView text (GridView item text)
+                        tv.setText(values.get(position));
+
+                        // Set the TextView background color
+                        tv.setBackgroundColor(Color.parseColor("#CDDC39"));
+
+                        // Return the TextView widget as GridView item
+                        return tv;
+                    }
+                };
+        GridView moviesList;
+        moviesList=(GridView)findViewById(R.id.grid);
+        moviesList.setAdapter(arrayAdapter);
 
 
 
@@ -117,6 +231,7 @@ public class kiniseis extends AppCompatActivity {
 
 
 
+    }
 
 
     public void send_email(View view) {
@@ -167,8 +282,16 @@ public class kiniseis extends AppCompatActivity {
                     SQLiteDatabase db = null;
                     db = openOrCreateDatabase("pelates", MODE_PRIVATE, null);
 
-                    Cursor cursor = db.rawQuery("select IDBARDIA,CH1,CH2  from  parousies where CH1>='" + d1 + "'  and CH1<='" + d2 + "' order by CH1 desc", null);  //+ " order by CH1 desc"
+                    TextView ckod=findViewById(R.id.ID);
+                    String kod=ckod.getText().toString();
 
+                    Cursor cursor;
+
+                    if (1==1){ // where IDBARDIA="+kod+"
+                         cursor = db.rawQuery("select IDBARDIA,CH1,CH2  from  parousies where IDBARDIA="+kod+" and  CH1>='" + d1 + "'  and CH1<='" + d2 + "' order by CH1 desc", null);  //+ " order by CH1 desc"
+                    }else {
+                         cursor = db.rawQuery("select IDBARDIA,CH1,CH2  from  parousies where CH1>='" + d1 + "'  and CH1<='" + d2 + "' order by CH1 desc", null);  //+ " order by CH1 desc"
+                    }
                     // Cursor cursor = db.selectAll();
                     fw.append("ONOMA");
                     fw.append(',');
@@ -264,9 +387,6 @@ public class kiniseis extends AppCompatActivity {
         }
     }
 
-
-
-
     private boolean mResult;
     public boolean getYesNoWithExecutionStop(String title, String message, Context context) {
         // make a handler that throws a runtime exception when a message is received
@@ -301,15 +421,6 @@ public class kiniseis extends AppCompatActivity {
 
         return mResult;
     }
-
-
-
-
-
-
-
-
-
 
     public void send_mail( String message){
 
