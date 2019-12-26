@@ -1,9 +1,14 @@
 package com.example.myapplication;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -11,9 +16,12 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -97,11 +105,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+// prosuetei thn kinhsh sto arxeio
     public void adding(){
         //'προσθετει την παρουσια'
-        SQLiteDatabase mydatabase = null;
-        mydatabase = openOrCreateDatabase("pelates", MODE_PRIVATE, null);
+
         EditText mKOD, mONO;
         TextView t;
         mKOD = (EditText) findViewById(R.id.KOD);
@@ -110,7 +117,28 @@ public class MainActivity extends AppCompatActivity {
         String cmKOD = mKOD.getText().toString();
         //    String cmONO = mONO.getText().toString();
 
+          //  if(cmKOD = null && !cmKOD.trim().isEmpty()){
+          //      mKOD.setText("");
+           //     notification();
+            //    return;
 
+           // }else{
+
+
+               // int  U_ID = Integer.parseInt(cmKOD);
+                if (!TextUtils.isDigitsOnly(cmKOD)){
+                    mKOD.setText("");
+                    notification();
+                    return;
+                }
+
+
+
+          //  }
+
+
+        SQLiteDatabase mydatabase = null;
+        mydatabase = openOrCreateDatabase("pelates", MODE_PRIVATE, null);
         Cursor cursor = mydatabase.rawQuery("select KOD,ONO from pel where KOD=" + cmKOD + " ", null);
         int n = 0;
         String mName="";
@@ -184,6 +212,40 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    private void notification() {
+
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this);
+        mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        r.play();
+
+     //   NotificationCompat.Builder builder= new NotificationCompat.Builder(this);
+     //   builder.setAutoCancel(true);
+     //   builder.setContentTitle("Work Progress");
+    //    builder.setContentText("Submit your today's work progress");
+     //   builder.setSmallIcon(R.drawable.ic_email_black_24dp);
+      //  Intent intent=new Intent(this, WorkStatus.class);
+       // PendingIntent pendingIntent= PendingIntent.getActivity(this, 1, intent,
+         //       PendingIntent.FLAG_UPDATE_CURRENT);
+     //   builder.setContentIntent(pendingIntent);
+    //    builder.setDefaults(Notification.DEFAULT_VIBRATE);
+     //   builder.setDefaults(Notification.DEFAULT_SOUND);
+
+    //    NotificationManager notificationManager= (NotificationManager)
+     //           getSystemService(NOTIFICATION_SERVICE);
+    //    notificationManager.notify(1, builder.build());
+    }
+
+
+
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -224,17 +286,6 @@ public class MainActivity extends AppCompatActivity {
    */
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Override
